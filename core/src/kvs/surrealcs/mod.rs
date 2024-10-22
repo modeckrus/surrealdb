@@ -12,15 +12,15 @@ use futures::lock::Mutex;
 use std::fmt::Debug;
 use std::ops::Range;
 use std::sync::Arc;
+use surrealcs::connection::pool::close_connection_pool;
+use surrealcs::connection::pool::create_connection_pool;
 use surrealcs::kernel::messages::server::interface::ServerTransactionMessage;
 use surrealcs::kernel::messages::server::kv_operations::*;
 use surrealcs::kernel::utils::generic::check_condition_not_met;
 use surrealcs::kernel::utils::generic::check_key_already_exists;
-use surrealcs::router::create_connection_pool;
 use surrealcs::transactions::interface::bridge::BridgeHandle;
-use surrealcs::transactions::interface::interface::{
-	Any as AnyState, Transaction as SurrealCSTransaction,
-};
+use surrealcs::transactions::interface::interface::Transaction as Tx;
+use surrealcs::utils::config::EnvConfigHandle as Env;
 
 /// The main struct that is used to interact with the database.
 #[derive(Clone)]
@@ -38,7 +38,7 @@ pub struct Transaction {
 	/// Has the transaction been started?
 	started: bool,
 	/// The underlying datastore transaction
-	inner: Arc<Mutex<SurrealCSTransaction<AnyState>>>,
+	inner: Arc<Mutex<Tx>>,
 	/// The save point implementation
 	save_points: SavePoints,
 }
@@ -76,7 +76,10 @@ impl Drop for Transaction {
 impl Datastore {
 	/// Open a new database
 	pub(crate) async fn new(path: &str) -> Result<Datastore, Error> {
-		match create_connection_pool(path, Some(*cnf::SURREALCS_CONNECTION_POOL_SIZE)).await {
+		// Get the specified connection pool size
+		let size = Some(*cnf::SURREALCS_CONNECTION_POOL_SIZE);
+		// Setup the connection pool
+		match create_connection_pool::<Env>(path, size).await {
 			Ok(_) => Ok(Datastore {}),
 			Err(_) => {
 				Err(Error::Ds("Cannot connect to the `surrealcs` storage engine".to_string()))
@@ -85,8 +88,8 @@ impl Datastore {
 	}
 	/// Shutdown the database
 	pub(crate) async fn shutdown(&self) -> Result<(), Error> {
-		// Nothing to do here
-		Ok(())
+		// Close the connection pool
+		close_connection_pool::<Env>().await.map_err(|e| Error::Ds(e.to_string()))
 	}
 	/// Starts a new transaction.
 	///
@@ -96,9 +99,7 @@ impl Datastore {
 	/// # Returns
 	/// the transaction
 	pub(crate) async fn transaction(&self, write: bool, _: bool) -> Result<Transaction, Error> {
-		let transaction = SurrealCSTransaction::new().await;
-		let transaction = transaction.map_err(|e| Error::Tx(e.to_string()))?;
-		let transaction = transaction.into_any();
+		let transaction = Tx::new().await.map_err(|e| Error::Tx(e.to_string()))?;
 		Ok(Transaction {
 			done: false,
 			check: Check::Warn,
