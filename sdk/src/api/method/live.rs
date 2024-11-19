@@ -163,8 +163,8 @@ pub struct Stream<R> {
 	pub(crate) client: Surreal<Any>,
 	// We no longer need the lifetime and the type parameter
 	// Leaving them in for backwards compatibility
-	pub(crate) id: Uuid,
-	pub(crate) rx: Option<Receiver<Notification<CoreValue>>>,
+	pub id: Uuid,
+	pub rx: Option<Receiver<Notification<CoreValue>>>,
 	pub(crate) response_type: PhantomData<R>,
 }
 

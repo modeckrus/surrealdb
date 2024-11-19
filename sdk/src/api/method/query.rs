@@ -310,8 +310,8 @@ pub(crate) type QueryResult = Result<CoreValue>;
 #[derive(Debug)]
 pub struct Response {
 	pub(crate) client: Surreal<Any>,
-	pub(crate) results: IndexMap<usize, (Stats, QueryResult)>,
-	pub(crate) live_queries: IndexMap<usize, Result<Stream<Value>>>,
+	pub results: IndexMap<usize, (Stats, QueryResult)>,
+	pub live_queries: IndexMap<usize, Result<Stream<Value>>>,
 }
 
 /// A `LIVE SELECT` stream from the `query` method
