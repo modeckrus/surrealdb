@@ -5,15 +5,15 @@ use crate::err::Error;
 use crate::sql;
 use crate::sql::value::Value;
 use castaway::match_type;
+use content::Number;
+use content::Serializer;
+use content::Unexpected;
 use serde::ser::Serialize;
-use serde_content::Number;
-use serde_content::Serializer;
-use serde_content::Unexpected;
 use std::borrow::Cow;
 use std::collections::BTreeMap;
 use std::fmt::Display;
 
-type Content = serde_content::Value<'static>;
+type Content = content::Value<'static>;
 
 /// Convert a `T` into `surrealdb::sql::Value` which is an enum that can represent any valid SQL data.
 pub fn to_value<T>(value: T) -> Result<Value, Error>
@@ -132,7 +132,7 @@ impl TryFrom<Vec<(Content, Content)>> for Value {
 					Cow::Owned(v) => v,
 				},
 				content => {
-					return Err(content.unexpected(serde_content::Expected::String))?;
+					return Err(content.unexpected(content::Expected::String))?;
 				}
 			};
 			let value = value.try_into()?;
@@ -173,8 +173,8 @@ impl serde::ser::Error for Error {
 	}
 }
 
-impl From<serde_content::Error> for Error {
-	fn from(error: serde_content::Error) -> Self {
+impl From<content::Error> for Error {
+	fn from(error: content::Error) -> Self {
 		Self::Serialization(error.to_string())
 	}
 }

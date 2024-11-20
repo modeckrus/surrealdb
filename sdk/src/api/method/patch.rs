@@ -7,8 +7,8 @@ use crate::api::Result;
 use crate::method::OnceLockExt;
 use crate::Surreal;
 use crate::Value;
+use content::Value as Content;
 use serde::de::DeserializeOwned;
-use serde_content::Value as Content;
 use std::borrow::Cow;
 use std::future::IntoFuture;
 use std::marker::PhantomData;
@@ -20,7 +20,7 @@ use surrealdb_core::sql::{to_value as to_core_value, Value as CoreValue};
 pub struct Patch<'r, C: Connection, R> {
 	pub(super) client: Cow<'r, Surreal<C>>,
 	pub(super) resource: Result<Resource>,
-	pub(super) patches: Vec<serde_content::Result<Content<'static>>>,
+	pub(super) patches: Vec<content::Result<Content<'static>>>,
 	pub(super) response_type: PhantomData<R>,
 }
 

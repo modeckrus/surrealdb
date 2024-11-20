@@ -5,10 +5,10 @@ use crate::api::Result;
 use crate::method::OnceLockExt;
 use crate::sql::Value;
 use crate::Surreal;
+use content::Serializer;
+use content::Value as Content;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
-use serde_content::Serializer;
-use serde_content::Value as Content;
 use std::borrow::Cow;
 use std::future::IntoFuture;
 use std::marker::PhantomData;
@@ -21,7 +21,7 @@ use surrealdb_core::sql::Array;
 pub struct Run<'r, C: Connection, R> {
 	pub(super) client: Cow<'r, Surreal<C>>,
 	pub(super) function: Result<(String, Option<String>)>,
-	pub(super) args: serde_content::Result<serde_content::Value<'static>>,
+	pub(super) args: content::Result<content::Value<'static>>,
 	pub(super) response_type: PhantomData<R>,
 }
 impl<C, R> Run<'_, C, R>

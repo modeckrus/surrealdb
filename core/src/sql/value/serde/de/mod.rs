@@ -1,11 +1,11 @@
 use crate::err::Error;
 use crate::sql;
 use crate::sql::Value;
+use content::Deserializer;
+use content::Number;
+use content::Serializer;
+use content::Value as Content;
 use serde::de::DeserializeOwned;
-use serde_content::Deserializer;
-use serde_content::Number;
-use serde_content::Serializer;
-use serde_content::Value as Content;
 use std::borrow::Cow;
 
 impl Value {

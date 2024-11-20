@@ -3,11 +3,11 @@ use crate::err::Error;
 use crate::sql;
 use crate::sql::Object;
 use crate::sql::Value;
+use content::Data;
+use content::Expected;
+use content::Unexpected;
 use serde::de::IntoDeserializer;
 use serde::Deserialize;
-use serde_content::Data;
-use serde_content::Expected;
-use serde_content::Unexpected;
 use std::collections::BTreeMap;
 
 pub(super) fn to_value(content: Content) -> Result<Value, Error> {

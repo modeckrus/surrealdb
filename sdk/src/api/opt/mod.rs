@@ -13,12 +13,12 @@ mod resource;
 mod tls;
 
 pub use config::*;
+use content::Serializer;
+use content::Value as Content;
 pub use endpoint::*;
 pub use export::*;
 pub use query::*;
 pub use resource::*;
-use serde_content::Serializer;
-use serde_content::Value as Content;
 #[cfg(any(feature = "native-tls", feature = "rustls"))]
 pub use tls::*;
 
@@ -54,7 +54,7 @@ enum InnerOp<'a, T> {
 /// [JSON Patch]: https://jsonpatch.com/
 #[derive(Debug)]
 #[must_use]
-pub struct PatchOp(pub(crate) serde_content::Result<Content<'static>>);
+pub struct PatchOp(pub(crate) content::Result<Content<'static>>);
 
 impl PatchOp {
 	/// Adds a value to an object or inserts it into an array.

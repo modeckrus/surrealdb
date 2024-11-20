@@ -54,6 +54,7 @@ mod version;
 #[cfg(test)]
 mod tests;
 
+use ::content::Serializer;
 pub use authenticate::Authenticate;
 #[doc(hidden)] // Not supported yet
 pub use begin::Begin;
@@ -80,7 +81,6 @@ pub use query::QueryStream;
 pub use run::IntoFn;
 pub use run::Run;
 pub use select::Select;
-use serde_content::Serializer;
 pub use set::Set;
 pub use signin::Signin;
 pub use signup::Signup;
@@ -1294,7 +1294,7 @@ where
 		Run {
 			client: Cow::Borrowed(self),
 			function: function.into_fn(),
-			args: Ok(serde_content::Value::Tuple(vec![])),
+			args: Ok(::content::Value::Tuple(vec![])),
 			response_type: PhantomData,
 		}
 	}

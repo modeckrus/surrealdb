@@ -5,8 +5,8 @@ use crate::api::Result;
 use crate::method::OnceLockExt;
 use crate::sql::to_value;
 use crate::Surreal;
+use content::Value as Content;
 use serde::de::DeserializeOwned;
-use serde_content::Value as Content;
 use std::borrow::Cow;
 use std::future::IntoFuture;
 use std::marker::PhantomData;
@@ -16,7 +16,7 @@ use std::marker::PhantomData;
 #[must_use = "futures do nothing unless you `.await` or poll them"]
 pub struct Signup<'r, C: Connection, R> {
 	pub(super) client: Cow<'r, Surreal<C>>,
-	pub(super) credentials: serde_content::Result<Content<'static>>,
+	pub(super) credentials: content::Result<Content<'static>>,
 	pub(super) response_type: PhantomData<R>,
 }
 
