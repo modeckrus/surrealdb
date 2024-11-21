@@ -1498,6 +1498,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c74b8349d32d297c9134b8c88677813a227df8f779daa29bfc29c183fe3dca6"
 
 [[package]]
+name = "content"
+version = "0.1.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "convert_case"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5649,15 +5656,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "serde-content"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e255eaf9f3814135df4f959c9f404ebb2e67238bae0ed412da10518d0629e7c9"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "serde_bytes"
 version = "0.11.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6193,6 +6191,7 @@ dependencies = [
  "bincode",
  "chrono",
  "ciborium",
+ "content",
  "criterion",
  "dmp",
  "env_logger 0.10.2",
@@ -6217,7 +6216,6 @@ dependencies = [
  "rustls-pki-types",
  "semver",
  "serde",
- "serde-content",
  "serde_json",
  "serial_test",
  "surrealdb-core",
@@ -6262,6 +6260,7 @@ dependencies = [
  "cedar-policy",
  "chrono",
  "ciborium",
+ "content",
  "criterion",
  "dashmap",
  "deunicode",
@@ -6312,7 +6311,6 @@ dependencies = [
  "scrypt",
  "semver",
  "serde",
- "serde-content",
  "serde_json",
  "serial_test",
  "sha1",
